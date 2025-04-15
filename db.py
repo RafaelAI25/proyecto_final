@@ -54,3 +54,38 @@ def obtener_pacientes():
         print(f"Error al conectar a la base de datos: {e}")
         return []
     
+
+# Función para obtener un paciente por su ID
+def obtener_paciente_por_id(id):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Pacientes WHERE id = ?', (id,))
+    paciente = cursor.fetchone()
+    conn.close()
+    return paciente
+
+# Función para actualizar un paciente
+def actualizar_paciente(id, nombre, edad, diagnostico):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE Pacientes
+        SET nombre = ?, edad = ?, diagnostico = ?
+        WHERE id = ?
+    ''', (nombre, edad, diagnostico, id))
+    conn.commit()
+    conn.close()
+
+# Función para eliminar un paciente
+def eliminar_paciente(id):
+    # Conectamos a la base de datos
+    conn = sqlite3.connect('data.db')
+    # Creamos un cursor para ejecutar comandos SQL
+    cursor = conn.cursor()
+    # Ejecutamos el comando SQL para eliminar el paciente con el ID especificado
+    cursor.execute('DELETE FROM Pacientes WHERE id = ?', (id,))
+    # Guardamos los cambios en la base de datos
+    conn.commit()
+    # Cerramos la conexión a la base de datos
+    conn.close()
+    

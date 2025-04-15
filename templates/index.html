@@ -18,9 +18,9 @@
 
     <!-- Bloque para mostrar mensajes de flash (notificaciones temporales que se pasan desde Flask)-->
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="alert alert-info">{{ menssages[0]}}</div>
-        {% endif %}
+    {% if messages %}
+    <div class="alert alert-info">{{ messages[0]}}</div>
+    {% endif %}
     {% endwith %}
 
     <!-- Tabla lista de pacientes -->
@@ -31,6 +31,7 @@
                 <th>Nombre</th>
                 <th>Edad</th>
                 <th>Diagnóstico</th>
+                <th>Acción</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,14 @@
                 <td>{{ paciente[1] }}</td>
                 <td>{{ paciente[2] }}</td>
                 <td>{{ paciente[3] }}</td>
+                <td><a href="{{ url_for('editar_paciente', id=paciente[0]) }}">Editar</a>&nbsp;|&nbsp;
+                    <form action="{{ url_for('eliminar_paciente', id=paciente[0]) }}" method="post"
+                        style="display:inline;"
+                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
+
+                        <button type="submit" class="btn btn-link">Eliminar</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
