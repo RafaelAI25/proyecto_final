@@ -24,7 +24,7 @@
             <td>{{ paciente[1] }}</td>
             <td>{{ paciente[2] }}</td>
             <td>{{ paciente[3] }}</td>
-            <td><a href="{{ url_for('editar_paciente', id=paciente[0]) }}">Editar</a>&nbsp;|&nbsp;
+            <td><a href="{{ url_for('editar_paciente', id=paciente[0]) }}" class="m-3">Editar</a>&nbsp;|&nbsp;
                 <form action="{{ url_for('eliminar_paciente', id=paciente[0]) }}" method="post" style="display:inline;"
                     onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
 
