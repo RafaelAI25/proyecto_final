@@ -79,5 +79,6 @@ def eliminar_paciente(id):
     # redirigir a la página principal
     return redirect(url_for('index'))
 
+
 app.run(host= '0.0.0.0', port=5000, debug=True)
 
