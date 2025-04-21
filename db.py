@@ -83,7 +83,7 @@ def obtener_pacientes(filtro='', pagina=1, por_pagina=5):
 
             total_pacientes = cursor.fetchone()[0]
 
-            return pacientes #, total_pacientes
+            return pacientes, total_pacientes
 
     except sqlite3.Error as e:
         # Mejor manejo del error

@@ -19,9 +19,28 @@ db.init_db()
 
 @app.route('/')
 def index():
+    # Obtener el valor del parámetro filtro de la URL, (por ejemplo para buscar pacientes por nombre o diagnóstico)
+    # si no se proporciona un filtro se usa una cadena vacia con valor predeterminado
+    filtro = request.args.get('filtro', '')
+
+    # Obtener el valor del parametro 'pagina' de la URL, que indica la página actual de los resultados
+    # Si no se proporciona, se establece en 1 por defecto
+    pagina = int(request.args.get('pagina', 1))
+
+    # definir el número de resultados por página
+    por_pagina = 7
+
     # obtener la lista de pacientes de la base de datos
-    pacientes = db.obtener_pacientes()
-    return render_template('index.html', pacientes=pacientes)
+    pacientes, total = db.obtener_pacientes(filtro=filtro, pagina=pagina, por_pagina=por_pagina)
+
+    # calcula el total de páginas necesarias para mosotrar los resultados, redondeando hacia arriba
+    total_paginas = (total + por_pagina - 1) // por_pagina
+
+    # Renderiza la plantilla index, pasando los datos necesarios para mostrar la vista
+    return render_template('index.html', pacientes=pacientes, 
+                           filtro=filtro, 
+                           pagina=pagina, 
+                           total_paginas=total_paginas)
 
 
 @app.route('/nuevo_paciente', methods=['GET', 'POST'])
