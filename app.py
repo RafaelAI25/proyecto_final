@@ -3,10 +3,10 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 import db
 import secrets
 
-import logging
+""" import logging
 
 # Configurar el logger
-logging.basicConfig(level=logging.DEBUG)  # Puedes cambiar el nivel a INFO, WARNING, ERROR, etc.
+logging.basicConfig(level=logging.DEBUG)  # Puedes cambiar el nivel a INFO, WARNING, ERROR, etc. """
 
 app = Flask(__name__)
 print(secrets.token_hex(32))  # Genera una clave secreta segura para producción
@@ -86,5 +86,5 @@ def eliminar_paciente(id):
     return redirect(url_for('index'))
 
 
-app.run(host= '0.0.0.0', port=5009, debug=True)
+app.run(host= '0.0.0.0', port=5000, debug=True)
 
