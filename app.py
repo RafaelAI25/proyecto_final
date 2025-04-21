@@ -28,7 +28,7 @@ def index():
     pagina = int(request.args.get('pagina', 1))
 
     # definir el número de resultados por página
-    por_pagina = 7
+    por_pagina = 15
 
     # obtener la lista de pacientes de la base de datos
     pacientes, total = db.obtener_pacientes(filtro=filtro, pagina=pagina, por_pagina=por_pagina)

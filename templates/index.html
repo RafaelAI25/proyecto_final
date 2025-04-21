@@ -52,8 +52,9 @@
 
 <br><br>
 <!-- Paginación de la tabla de pacientes -->
+<p>Mostrando {{ pacientes|length }} de {{ total_pacientes }} pacientes</p><br>
 <div class="d-flex justify-content-center">
-    <p>Mostrando {{ pacientes|length }} de {{ total_pacientes }} pacientes</p>
+    
     <nav aria-label="Paginación">
         <ul class="pagination justify-content-center">
             <!-- Botón anterior, sólo visible si estamos en una página mayora a la primera-->
