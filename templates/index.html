@@ -50,31 +50,34 @@
     </tbody>
 </table>
 
-<br><br>s
+<br><br>
 <!-- Paginación de la tabla de pacientes -->
-<nav aria-label="Paginación">
-    <ul class="pagination justify-content-center">
-        <!-- Botón anterior, sólo visible si estamos en una página mayora a la primera-->
-        {% if pagina > 1 %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('index', pagina=pagina-1, filtro=filtro) }}">Anterior</a>
-        </li>
-        {% endif %}
+<div class="d-flex justify-content-center">
+    <p>Mostrando {{ pacientes|length }} de {{ total_pacientes }} pacientes</p>
+    <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+            <!-- Botón anterior, sólo visible si estamos en una página mayora a la primera-->
+            {% if pagina > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', pagina=pagina-1, filtro=filtro) }}">Anterior</a>
+            </li>
+            {% endif %}
 
-        <!-- Botones de paginación, uno por cada página -->        
-        {% for p in range(1, total_paginas + 1) %}
-        <li class="page-item {% if p == pagina %}active{% endif %}">
-            <a class="page-link" href="{{ url_for('index', pagina=p, filtro=filtro) }}">{{ p }}</a>
-        </li>
-        {% endfor %}
+            <!-- Botones de paginación, uno por cada página -->        
+            {% for p in range(1, total_paginas + 1) %}
+            <li class="page-item {% if p == pagina %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('index', pagina=p, filtro=filtro) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
 
-        <!-- Botón siguiente, sólo visible si estamos en una página menor a la última -->
-        {% if pagina < total_paginas %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('index', pagina=pagina+1, filtro=filtro) }}">Siguiente</a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
+            <!-- Botón siguiente, sólo visible si estamos en una página menor a la última -->
+            {% if pagina < total_paginas %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', pagina=pagina+1, filtro=filtro) }}">Siguiente</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 <!-- Aquí termina el bloque de contenido específico de la página -->
 {% endblock %}

@@ -1,4 +1,6 @@
 import sqlite3 # importamos el modulo SQLite3
+import werkzeug.security # importamos el modulo werkzeug.security para hashear contraseñas
+from werkzeug.security import generate_password_hash, check_password_hash # importamos las funciones para hashear y verificar contraseñas
 
 # Función para inicializar la base de datos
 def init_db():
@@ -40,8 +42,6 @@ def agregar_paciente(nombre, edad, diagnostico):
     conn.commit()
     conn.close()
 
-
-import sqlite3
 
 # Función para obtener todos los pacientes con paginación y filtro
 def obtener_pacientes(filtro='', pagina=1, por_pagina=5):
@@ -101,7 +101,6 @@ def obtener_paciente_por_id(id):
     return paciente
 
 
-
 # Función para actualizar un paciente
 def actualizar_paciente(id, nombre, edad, diagnostico):
     conn = sqlite3.connect('data.db')
@@ -127,3 +126,34 @@ def eliminar_paciente(id):
     # Cerramos la conexión a la base de datos
     conn.close()
     
+
+# Función para registrar usuario
+def registrar_usuario(usuario, contraseña):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    hashed_contraseña = generate_password_hash(contraseña)  # Hasheamos la contraseña
+
+    try:
+        cursor.execute('''
+            INSERT INTO Usuarios (usuario, contraseña)
+            VALUES (?, ?)
+        ''', (usuario, hashed_contraseña))
+        conn.commit()
+        return True  # Registro exitoso
+    except sqlite3.IntegrityError:
+        print("El usuario ya existe.")
+    finally:
+        conn.close()
+
+# Función para autenticar usuario
+def verificar_usuario(usuario, contraseña):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT contraseña FROM Usuarios WHERE usuario = ?', (usuario,))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        hashed_contraseña = row[0]
+        return check_password_hash(hashed_contraseña, contraseña)  # Verificamos la contraseña
+    return False  # Usuario no encontrado o contraseña incorrecta
