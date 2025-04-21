@@ -41,54 +41,55 @@ def agregar_paciente(nombre, edad, diagnostico):
     conn.close()
 
 
-# Función para obtener todos los pacientes
+import sqlite3
+
+# Función para obtener todos los pacientes con paginación y filtro
 def obtener_pacientes(filtro='', pagina=1, por_pagina=5):
     # Calcular el desplazamiento para la paginación
     offset = (pagina - 1) * por_pagina
-
     
     try:
-        # Conectamos a la base de datos
-        conn = sqlite3.connect('data.db')
-        cursor = conn.cursor()
+        # Usar 'with' para manejar la conexión a la base de datos
+        with sqlite3.connect('data.db') as conn:
+            cursor = conn.cursor()
 
-        # Si proporcionamos un filtro, realizamos la busqueda filtrada por nombre o por diganóstico
-        if filtro:
-            consulta = '''
-                SELECT * FROM Pacientes
-                WHERE nombre LIKE ? OR diagnostico LIKE ?
-                LIMIT ? OFFSET ?
+            # Si proporcionamos un filtro, realizamos la búsqueda filtrada por nombre o diagnóstico
+            if filtro:
+                consulta = '''
+                    SELECT * FROM Pacientes
+                    WHERE nombre LIKE ? OR diagnostico LIKE ?
+                    LIMIT ? OFFSET ?
                 '''
-            parametros = ('%' + filtro + '%', '%' + filtro + '%', por_pagina, offset)
+                parametros = ('%' + filtro + '%', '%' + filtro + '%', por_pagina, offset)
 
-            cursor.execute(consulta, parametros) # Ejecutamos la consulta con los parámetros
-                
-        else:
-            # Si no proporcionamos un filtro, obtenemos todos los pacientes
-            consulta = '''
-                SELECT * FROM Pacientes
-                LIMIT ? OFFSET ?
-            '''
-            parametros  = (por_pagina, offset)
-            cursor.execute(consulta, parametros)
-        
-        pacientes = cursor.fetchall()
+                cursor.execute(consulta, parametros)  # Ejecutamos la consulta con los parámetros
+            else:
+                # Si no proporcionamos un filtro, obtenemos todos los pacientes
+                consulta = '''
+                    SELECT * FROM Pacientes
+                    LIMIT ? OFFSET ?
+                '''
+                parametros = (por_pagina, offset)
+                cursor.execute(consulta, parametros)
+            
+            pacientes = cursor.fetchall()
 
-        if filtro:
-            # Obtenemos el total de pacientes para la paginación
-            cursor.execute('SELECT COUNT(*) FROM Pacientes WHERE nombre LIKE ? OR diagnostico LIKE ?', ('%' + filtro + '%', '%' + filtro + '%'))
-        else:
-            cursor.execute('SELECT COUNT(*) FROM Pacientes')
-        
-        total_pacientes = cursor.fetchone()[0]
-        
-        
-        conn.close()
-        return pacientes, total_pacientes
+            # Si proporcionamos un filtro, obtenemos el total de pacientes filtrados
+            if filtro:
+                cursor.execute('SELECT COUNT(*) FROM Pacientes WHERE nombre LIKE ? OR diagnostico LIKE ?', 
+                               ('%' + filtro + '%', '%' + filtro + '%'))
+            else:
+                cursor.execute('SELECT COUNT(*) FROM Pacientes')
+
+            total_pacientes = cursor.fetchone()[0]
+
+            return pacientes #, total_pacientes
+
     except sqlite3.Error as e:
+        # Mejor manejo del error
         print(f"Error al conectar a la base de datos: {e}")
-        return []
-    
+        return [], 0  # Retorna lista vacía y 0 pacientes en caso de error
+
 
 # Función para obtener un paciente por su ID
 def obtener_paciente_por_id(id):

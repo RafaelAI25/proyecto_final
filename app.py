@@ -3,6 +3,11 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 import db
 import secrets
 
+import logging
+
+# Configurar el logger
+logging.basicConfig(level=logging.DEBUG)  # Puedes cambiar el nivel a INFO, WARNING, ERROR, etc.
+
 app = Flask(__name__)
 print(secrets.token_hex(32))  # Genera una clave secreta segura para producción
 app.secret_key = secrets.token_hex(32)  # Genera una clave secreta segura para producción
@@ -15,10 +20,7 @@ db.init_db()
 @app.route('/')
 def index():
     # obtener la lista de pacientes de la base de datos
-    print("obteniendo pacientes")
     pacientes = db.obtener_pacientes()
-    print(pacientes)
-    
     return render_template('index.html', pacientes=pacientes)
 
 
@@ -84,5 +86,5 @@ def eliminar_paciente(id):
     return redirect(url_for('index'))
 
 
-app.run(host= '0.0.0.0', port=5000, debug=True)
+app.run(host= '0.0.0.0', port=5009, debug=True)
 

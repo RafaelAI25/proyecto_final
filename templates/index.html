@@ -18,6 +18,7 @@
     </thead>
     <tbody>
         <!-- Iterar sobre la lista de pacientes y crear una fila por cada uno -->
+        {% if pacientes %}
         {% for paciente in pacientes %}
         <tr>
             <td>{{ paciente[0] }}</td>
@@ -32,7 +33,14 @@
                 </form>
             </td>
         </tr>
+
         {% endfor %}
+
+        {% else %}
+        <tr>
+            <td colspan="3">No hay pacientes disponibles.</td>
+        </tr>
+        {% endif %}
     </tbody>
 </table>
 <!-- Aquí termina el bloque de contenido específico de la página -->
