@@ -42,7 +42,7 @@ def agregar_paciente(nombre, edad, diagnostico):
 
 
 # Función para obtener todos los pacientes
-def buscar_pacientes(filtro='', pagina=1, por_pagina=5):
+def obtener_pacientes(filtro='', pagina=1, por_pagina=5):
     # Calcular el desplazamiento para la paginación
     offset = (pagina - 1) * por_pagina
 

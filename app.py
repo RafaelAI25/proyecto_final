@@ -4,6 +4,7 @@ import db
 import secrets
 
 app = Flask(__name__)
+print(secrets.token_hex(32))  # Genera una clave secreta segura para producción
 app.secret_key = secrets.token_hex(32)  # Genera una clave secreta segura para producción
 
 
@@ -14,7 +15,10 @@ db.init_db()
 @app.route('/')
 def index():
     # obtener la lista de pacientes de la base de datos
+    print("obteniendo pacientes")
     pacientes = db.obtener_pacientes()
+    print(pacientes)
+    
     return render_template('index.html', pacientes=pacientes)
 
 
