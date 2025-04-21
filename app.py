@@ -37,10 +37,7 @@ def index():
     total_paginas = (total + por_pagina - 1) // por_pagina
 
     # Renderiza la plantilla index, pasando los datos necesarios para mostrar la vista
-    return render_template('index.html', pacientes=pacientes, 
-                           filtro=filtro, 
-                           pagina=pagina, 
-                           total_paginas=total_paginas)
+    return render_template('index.html', pacientes=pacientes, filtro=filtro, pagina=pagina, total_paginas=total_paginas)
 
 
 @app.route('/nuevo_paciente', methods=['GET', 'POST'])
