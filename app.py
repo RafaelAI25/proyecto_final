@@ -144,8 +144,16 @@ def registro():
     return render_template('register.html')
 
 
-            
-
+# Ruta para cerrar sesión
+@app.route('/logout')
+def logout():
+    
+    # Eliminamos el nombre de usuario de la sesión
+    session.pop('usuario', None)
+    # Mostramos el mensaje de cierre de sesión exitoso
+    flash('Has cerrado sesión exitosamente.')
+    # Redirigimos al usuario a la página de inicio
+    return redirect(url_for('index'))
 
 
 
