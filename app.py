@@ -101,6 +101,54 @@ def eliminar_paciente(id):
     # redirigir a la página principal
     return redirect(url_for('index'))
 
+# Ruta para el inicio de sesión
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Verificamos si el método de la solicitud es POST
+    if request.method == 'Post':
+        # comprobamos si el usuario y la contraseña son correctos usando la función 
+        # verificar_usuario de db.py
+        if db.verificar_usuario(request.form['usuario'], request.form['contraseña']):
+            # Si son correctas, almacenamos el nombre de usuario en la sesión
+            session['usuario'] = request.form['usuario']
+
+            # Mostramos el mensaje del inicio de sesión exitoso
+            flash('Inicio de sesión exitoso.')
+
+            return redirect(url_for('index'))
+        else:
+            # Si no son correctas, mostramos un mensaje de error
+            flash('Usuario o contraseña incorrectos.')
+
+    # Si el método de la solicitud es GET (cuando se carga la página del formulario),
+    #  renderizamos la plantilla de inicio de sesión
+    return render_template('login.html')
+
+# Ruta para manejar el registro de usuarios
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    # verificamos si el método de la solicitud es 'POST' (el usuario envió formulario)
+    if request.method == 'POST':
+        # Intentamos registrar el usuario usando la función registrar_usuario
+        exito = db.registrar_usuario(request.form['usuario'], request.form['contraseña'])
+        if exito:
+            # Mostramos el mensaje 
+            flash("El usuario fué regitrado. Ahora puedes iniciar sesión.", "success")
+
+            # Redirigimos al usuario a la página de inicio de sesión
+            return redirect(url_for('login'))
+        else:
+            # Error el usuario ya existe
+            flash('Ese usuario ya existe.', 'danger')
+
+    return render_template('register.html')
+
+
+            
+
+
+
+
 
 app.run(host= '0.0.0.0', port=5000, debug=True)
 
