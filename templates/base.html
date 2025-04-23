@@ -17,7 +17,7 @@
         <!-- Sección para mostrar los mensajes 'flash' (mensajes temporales) -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="alert alert-info">{{ messages[0]}}
+                <div class="alert alert-info alert-dismissible fade show" id="flash-message" role="alert">{{ messages[0]}}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             {% endif %}
@@ -31,6 +31,8 @@
 
     <!-- script bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <!-- Borrado de mensajes flash -->
+    <script src="../static/script.js"></script>
 </body>
 
 </html>
