@@ -225,8 +225,36 @@ def exportar_excel():
     # Response crea una respuesta HTTP con el contenido del archivo Excel.
     # 'mimetype' especifica el tipo de contenido como Excel, y
     # 'headers' establece el nombre del archivo Excel que se descargará.
+
+
+# Función para generar las gráficas de los pacientes
+@app.route('/graficas')
+def graficas():
+    # Conexión a la base de datos
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    # Ejecutamos la consulta SQL para obtener el conteo de pacientes por diagnóstico
+    cursor.execute('SELECT diagnostico, COUNT(*) FROM Pacientes GROUP BY diagnostico')
+    # Obtenemos los resultados
+    resultados = cursor.fetchall()
+
+    # Consulta para obtener distribución de edades de los pacientes
+    cursor.execute('SELECT edad FROM Pacientes')
+    filas = cursor.fetchall()
+    edades = []
+    for fila in filas:
+        edades.append(fila[0])
+
+    conn.close()
+
+    # Preparamos los datos para las gráficas
+    etiquetas = [fila[0] for fila in resultados]
+    conteos = [fila[1] for fila in resultados] # número de pacientes por diagnóstico
+
+    return render_template('graficas.html', etiquetas=etiquetas, conteos=conteos, edades=edades)
+
+
+
     
-
-
 app.run(host= '0.0.0.0', port=5000, debug=True)
 
