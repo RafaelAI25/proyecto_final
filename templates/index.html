@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Lista de Pacientes{% endblock %}
 {% block content %} <!-- Aquí se define el contenido específico de la página -->
+
+<div class="d-flex justify-content-end align-items-center">
+{% if session.get('usuario') %}
+<!-- Si el usuario ha iniciado sesión, mostrar su nombre -->
+<span class="me-3">Bienvenido, {{ session['usuario'] }}</span>
+<a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
+{% endif %}
+</div>
+
 <!-- Enlace a la vista de nuevo paciente -->
 <a href="{{url_for('nuevo_paciente')}}" class="btn btn-primary mb-3">Nuevo paciente</a>
 
@@ -58,7 +67,7 @@
 
     <nav aria-label="Paginación">
         <ul class="pagination justify-content-center">
-            
+
             <!-- Botón anterior, sólo visible si estamos en una página mayora a la primera-->
             {% if pagina > 1 %}
             <li class="page-item">
@@ -91,21 +100,19 @@
             </li>
             {% endfor %}
 
-            {% if fin < total_paginas %} 
-            <li class="page-item disabled"><span class="page-link">…</span></li>
-            <li class="page-item">
-                <a class="page-link"
-                    href="{{ url_for('index', pagina=total_paginas, buscar=buscar, filtro=filtro) }}">{{
-                    total_paginas }}</a>
-            </li>
-            {% endif %}
+            {% if fin < total_paginas %} <li class="page-item disabled"><span class="page-link">…</span></li>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('index', pagina=total_paginas, buscar=buscar, filtro=filtro) }}">{{
+                        total_paginas }}</a>
+                </li>
+                {% endif %}
 
-            <!-- Botón siguiente, sólo visible si estamos en una página menor a la última -->
-            {% if pagina < total_paginas %} 
-            <li class="page-item">
-            <a class="page-link" href="{{ url_for('index', pagina=pagina+1, filtro=filtro) }}">Siguiente</a>
-            </li>
-            {% endif %}
+                <!-- Botón siguiente, sólo visible si estamos en una página menor a la última -->
+                {% if pagina < total_paginas %} <li class="page-item">
+                    <a class="page-link" href="{{ url_for('index', pagina=pagina+1, filtro=filtro) }}">Siguiente</a>
+                    </li>
+                    {% endif %}
         </ul>
     </nav>
 </div>

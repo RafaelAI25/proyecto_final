@@ -3,10 +3,6 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 import db
 import secrets
 
-""" import logging
-
-# Configurar el logger
-logging.basicConfig(level=logging.DEBUG)  # Puedes cambiar el nivel a INFO, WARNING, ERROR, etc. """
 
 app = Flask(__name__)
 print(secrets.token_hex(32))  # Genera una clave secreta segura para producción
