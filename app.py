@@ -105,10 +105,10 @@ def eliminar_paciente(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Verificamos si el método de la solicitud es POST
-    if request.method == 'post':
+    if request.method == 'POST':
         # comprobamos si el usuario y la contraseña son correctos usando la función 
         # verificar_usuario de db.py
-        if db.verificar_usuario(request.form[' '], request.form['contraseña']):
+        if db.verificar_usuario(request.form['usuario'], request.form['contraseña']):
             # Si son correctas, almacenamos el nombre de usuario en la sesión
             session['usuario'] = request.form['usuario']
 
