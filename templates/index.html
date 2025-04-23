@@ -3,15 +3,21 @@
 {% block content %} <!-- Aquí se define el contenido específico de la página -->
 
 <div class="d-flex justify-content-end align-items-center">
-{% if session.get('usuario') %}
-<!-- Si el usuario ha iniciado sesión, mostrar su nombre -->
-<span class="me-3">Bienvenido, {{ session['usuario'] }}</span>
-<a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
-{% endif %}
+    {% if session.get('usuario') %}
+    <!-- Si el usuario ha iniciado sesión, mostrar su nombre -->
+    <span class="me-3">Bienvenido, {{ session['usuario'] }}</span>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
+    {% endif %}
 </div>
 
-<!-- Enlace a la vista de nuevo paciente -->
-<a href="{{url_for('nuevo_paciente')}}" class="btn btn-primary mb-3">Nuevo paciente</a>
+<div class="d-flex justify-content-start align-items-center">
+    <!-- Enlace a la vista de nuevo paciente -->
+    <a href="{{url_for('nuevo_paciente')}}" class="btn btn-primary btn-sm m-3">Nuevo paciente</a>
+    <!-- Enlace para exportar datos en formato csv -->
+    <a href="{{url_for('exportar_csv')}}" class="btn btn-outline-primary btn-sm m-3">Exportar CSV</a>
+    <!-- Enlace para exportar datos en formato xlsx -->
+    <a href="{{url_for('exportar_excel')}}" class="btn btn-outline-success btn-sm m-3">Exportar Excel</a>
+</div>
 
 <!-- Formulario para realizar la busqueda con filtro -->
 <form action="{{ url_for('index')}}" method="get" class="mb-3 d-flex">
