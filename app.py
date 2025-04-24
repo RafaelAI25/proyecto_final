@@ -4,6 +4,7 @@ import db
 import secrets
 import csv
 import pandas as pd 
+import json
 
 
 
@@ -233,17 +234,24 @@ def graficas():
     # Conexión a la base de datos
     conn = sqlite3.connect('data.db')
     cursor = conn.cursor()
+
+    # Daignostico y conteo de pacientes
     # Ejecutamos la consulta SQL para obtener el conteo de pacientes por diagnóstico
     cursor.execute('SELECT diagnostico, COUNT(*) FROM Pacientes GROUP BY diagnostico')
     # Obtenemos los resultados
     resultados = cursor.fetchall()
 
+
+    #Edades de los pacientes
     # Consulta para obtener distribución de edades de los pacientes
     cursor.execute('SELECT edad FROM Pacientes')
-    filas = cursor.fetchall()
+   
+    """ filas = cursor.fetchall()
     edades = []
     for fila in filas:
-        edades.append(fila[0])
+        edades.append(fila[0]) """
+
+    edades = [fila[0] for fila in cursor.fetchall()]
 
     conn.close()
 
@@ -251,7 +259,7 @@ def graficas():
     etiquetas = [fila[0] for fila in resultados]
     conteos = [fila[1] for fila in resultados] # número de pacientes por diagnóstico
 
-    return render_template('graficas.html', etiquetas=etiquetas, conteos=conteos, edades=edades)
+    return render_template('graficas.html', etiquetas=json.dumps(etiquetas), conteos=json.dumps(conteos), edades=json.dumps(edades))
 
 
 
