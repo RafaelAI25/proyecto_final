@@ -18,6 +18,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    const etiquetasData = {{ etiquetas | safe }}
+    const conteosData = {{ conteos | safe }}
+    const edadesData = {{ edades | safe }}
+
     // Gráfico de diagnósticos
     const ctxDiagnosticos = document.getElementById('graficoDiagnosticos');
 
@@ -25,15 +29,15 @@
     new Chart(ctxDiagnosticos, {
         type: 'bar',
         data: {
-            labels: {{ etiquetas|safe }},
-        datasets: [{
-            label: 'Pacientes por Diagnóstico',
-            data: {{ conteos | safe }},
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
+            labels: etiquetasData,
+            datasets: [{
+                label: 'Pacientes por Diagnóstico',
+                data: conteosData,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
             }]
-        },    
+        },
     });
 
     // Gráfico de edades
@@ -43,14 +47,13 @@
     new Chart(ctxEdades, {
         type: 'line',
         data: {
-            labels: [...Array({{ edades | length }
-    }).keys()],
-    datasets: [{
-        label: 'Pacientes por Edad',
-        data: {{ edades | safe }},
-        borderColor: 'rgba(255, 99, 132, 1)',
-        fill: false,
-        tension: 0.3 
+            labels: edadesData.map((_, index) => index + 1),
+            datasets: [{
+                label: 'Pacientes por Edad',
+                data: edadesData,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                fill: false,
+                tension: 0.3
             }]
         }
     });
