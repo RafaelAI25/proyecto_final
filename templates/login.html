@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %} <!-- Aquí se define el contenido específico de la página -->
+
+<div class="d-flex justify-content-end align-items-center">
+<!-- Si el usuario no ha iniciado sesión, mostrar un mensaje de error -->
+<!-- <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm me-2">Inciar sesión</a> -->
+<a href="{{ url_for('registro') }}" class="btn btn-outline-success btn-sm">Registrarse</a>
+</div>
+
+
+<h2>Iniciar sesión</h2>
+
+<form method="post">
+    <input type="text" name="usuario" placeholder="Usuario" required class="form-control mb-2"><br>
+    <input type="password" name="contraseña" placeholder="Contraseña" required class="form-control mb-2"><br><br>
+
+    <button class="btn btn-primary">Entrar</button>
+</form><br><br>
+
+
+
+{% endblock %}

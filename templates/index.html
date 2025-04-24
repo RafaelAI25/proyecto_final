@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Lista de Pacientes{% endblock %}
+{% block content %} <!-- Aquí se define el contenido específico de la página -->
+
+<div class="d-flex justify-content-end align-items-center">
+    {% if session.get('usuario') %}
+    <!-- Si el usuario ha iniciado sesión, mostrar su nombre -->
+    <span class="me-3">Bienvenido, {{ session['usuario'] }}</span>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
+    {% endif %}
+</div>
+
+<div class="d-flex justify-content-start align-items-center">
+    <!-- Enlace a la vista de nuevo paciente -->
+    <a href="{{url_for('nuevo_paciente')}}" class="btn btn-primary btn-sm m-3">Nuevo paciente</a>
+    <!-- Enlace para exportar datos en formato csv -->
+    <a href="{{url_for('exportar_csv')}}" class="btn btn-outline-primary btn-sm m-3">Exportar CSV</a>
+    <!-- Enlace para exportar datos en formato xlsx -->
+    <a href="{{url_for('exportar_excel')}}" class="btn btn-outline-success btn-sm m-3">Exportar Excel</a>
+    <!-- Enlace para ver gráficas de datos -->
+    <a href="{{url_for('graficas')}}" class="btn btn-outline-info btn-sm m-3">Gráficas</a>
+</div>
+
+<!-- Formulario para realizar la busqueda con filtro -->
+<form action="{{ url_for('index')}}" method="get" class="mb-3 d-flex">
+    <!-- Campo de entrada de texto para el filtro de busqueda -->
+    <input type="text" name="filtro" class="form-control me-2" placeholder="Buscar por nombre o diagnóstico"
+        value="{{ filtro }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+<!-- Tabla lista de pacientes -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Diagnóstico</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Iterar sobre la lista de pacientes y crear una fila por cada uno -->
+        {% if pacientes %}
+        {% for paciente in pacientes %}
+        <tr>
+            <td>{{ paciente[0] }}</td>
+            <td>{{ paciente[1] }}</td>
+            <td>{{ paciente[2] }}</td>
+            <td>{{ paciente[3] }}</td>
+            <td><a href="{{ url_for('editar_paciente', id=paciente[0]) }}" class="m-3">Editar</a>&nbsp;|&nbsp;
+                <form action="{{ url_for('eliminar_paciente', id=paciente[0]) }}" method="post" style="display:inline;"
+                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
+
+                    <button type="submit" class="btn btn-link">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        {% else %}
+        <tr>
+            <td colspan="3">No hay pacientes disponibles.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<br><br>
+<!-- Paginación de la tabla de pacientes -->
+<p>Mostrando {{ pacientes|length }} de {{ total_pacientes }} pacientes</p><br>
+<div class="d-flex justify-content-center">
+
+    <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+
+            <!-- Botón anterior, sólo visible si estamos en una página mayora a la primera-->
+            {% if pagina > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', pagina=pagina-1, filtro=filtro) }}">Anterior</a>
+            </li>
+            {% endif %}
+
+            {# Calcular rango de páginas a mostrar #}
+            {% set max_paginas_mostrar = 20 %}
+            {% set mitad_rango = max_paginas_mostrar // 2 %}
+            {% set inicio = pagina - mitad_rango if pagina - mitad_rango > 1 else 1 %}
+            {% set fin = inicio + max_paginas_mostrar - 1 %}
+            {% if fin > total_paginas %}
+            {% set fin = total_paginas %}
+            {% set inicio = fin - max_paginas_mostrar + 1 if fin - max_paginas_mostrar + 1 > 1 else 1 %}
+            {% endif %}
+
+            {% if inicio > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', pagina=1, buscar=buscar, filtro=filtro) }}">1</a>
+            </li>
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+
+
+            <!-- Botones de paginación, uno por cada página -->
+            {% for p in range(inicio, fin + 1) %}
+            <li class="page-item {% if p == pagina %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('index', pagina=p, filtro=filtro) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+
+            {% if fin < total_paginas %} <li class="page-item disabled"><span class="page-link">…</span></li>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('index', pagina=total_paginas, buscar=buscar, filtro=filtro) }}">{{
+                        total_paginas }}</a>
+                </li>
+                {% endif %}
+
+                <!-- Botón siguiente, sólo visible si estamos en una página menor a la última -->
+                {% if pagina < total_paginas %} <li class="page-item">
+                    <a class="page-link" href="{{ url_for('index', pagina=pagina+1, filtro=filtro) }}">Siguiente</a>
+                    </li>
+                    {% endif %}
+        </ul>
+    </nav>
+</div>
+<!-- Aquí termina el bloque de contenido específico de la página -->
+{% endblock %}

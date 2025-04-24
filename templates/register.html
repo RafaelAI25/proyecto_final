@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Registro{% endblock %}
+{% block content %} <!-- Aquí se define el contenido específico de la página -->
+
+<h2>Registro de usuario</h2>
+
+<form method="POST">
+    <input type="text" name="usuario" placeholder="Usuario" required class="form-control mb-2"><br><br>
+    <input type="password" name="contraseña" placeholder="Contraseña" required class="form-control mb-2"><br><br>
+
+    <button class="btn btn-success">Registrar</button>
+</form><br><br>
+
+<a href="{{ url_for('login') }}">Ya tengo cuenta</a>
+
+{% endblock %}

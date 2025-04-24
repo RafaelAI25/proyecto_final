@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Agregar Paciente{% endblock %} <!-- Título de la página -->
+{% block content %} <!-- Aquí se define el contenido específico de la página -->
+
+    <h2>Agregar Paciente</h2> <!-- Título de la sección -->
+    <form method="post">
+        
+        <div class="mb-3">
+            <!-- Campo para el nombre del paciente -->
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control"> <!-- 'name' define la clave del dato enviado-->
+        </div>
+        
+        <div class="mb-3">
+            <!-- Campo para la edad del paciente -->
+            <label for="edad">Edad</label>
+            <input type="text" name="edad" id="edad" class="form-control"> <!-- 'name' define la clave del dato enviado-->
+        </div>
+        
+        <div class="mb-3">
+            <!-- Campo para el diagnóstico del paciente -->
+            <label for="diagnostico">Diagnóstico</label>
+            <input type="text" name="diagnostico" id="diagnostico" class="form-control"> <!-- 'name' define la clave del dato enviado-->
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn btn-success">Guardar</button>
+
+        <!-- Enlace para volver a la lista de pacientes -->
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver a la lista de pacientes</a>
+    </form>
+
+{% endblock %} <!-- Aquí termina el bloque de contenido específico de la página -->
