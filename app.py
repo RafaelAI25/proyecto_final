@@ -234,8 +234,6 @@ def graficas():
     # Conexión a la base de datos
     conn = sqlite3.connect('data.db')
     cursor = conn.cursor()
-
-    # Daignostico y conteo de pacientes
     # Ejecutamos la consulta SQL para obtener el conteo de pacientes por diagnóstico
     cursor.execute('SELECT diagnostico, COUNT(*) FROM Pacientes GROUP BY diagnostico')
     # Obtenemos los resultados
@@ -264,8 +262,6 @@ def graficas():
 
 
     
-#app.run(host= '0.0.0.0', port=5000, debug=True)
-
 if __name__ == '__main__':
     app.run()
 
